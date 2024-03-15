@@ -75,7 +75,7 @@ else:
     #sumary data
     df_short = df[['channel_id', 'channel_name', 'video_id', 'type', 'video_title',
                'view_count', 'like_count', 'dislike_count', 'favoriteCount', 'commentCount',
-               'publishedAt']]
+               'publishedAt']].head(20)
 
     msg_sumary_data = gs.generate_summary_dataframe(df_short)
 
