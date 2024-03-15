@@ -4,7 +4,7 @@ import util
 import streamlit as st
 
 # youtube = build('youtube', 'v3', developerKey=os.environ['API_KEY'])
-youtube = build('youtube', 'v3', developerKey='AIzaSyD7bD1JV0VUA5DFl0uKYbFCHIUnUa59yFM')
+youtube = build('youtube', 'v3', developerKey='')
 
 
 def get_channel_videos(channel_id):
