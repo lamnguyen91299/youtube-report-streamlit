@@ -3,6 +3,7 @@ import streamlit as st
 import YouTubeAPI as youTube
 import config
 import plotly.express as px
+import generate_sumary as gs
 from numerize import numerize
 
 # set the layout of the app
@@ -15,7 +16,7 @@ st.set_page_config(layout='wide')
 
 
 # set the title of the app
-st.title('YouTube Channel Data')
+st.title('Youtube channel auto report')
 
 with st.expander('About this app'):
     st.write('This is a data collection app which allows users to download the list of videos posted by YouTube Channel '
@@ -35,6 +36,8 @@ with st.form('youTube_channel_id'):
                                                                              'eg. UCSNeZleDn9c74yQc-EKnVTA',
                                      help="To test the app you can use channel id UCSNeZleDn9c74yQc-EKnVTA")
         st.form_submit_button(label='Get Channel Stats')
+        st.write('Use this Channel Id : UC6bXz3g1C9H6bdFa-wcZ72Q')
+        st.write('if you dont have any :)')
 
 if youTubeChannelID == '':
     st.stop()
@@ -61,7 +64,6 @@ else:
 
     # display dataframe
     st.dataframe(df.head(100))
-
     # Download data
     csv = youTube.convert_df(df)
     st.download_button(
@@ -70,7 +72,14 @@ else:
         file_name=f'{config.channel_name[0]}.csv',
         mime='text/csv',
     )
+    #sumary data
+    df_short = df[['channel_id', 'channel_name', 'video_id', 'type', 'video_title',
+               'view_count', 'like_count', 'dislike_count', 'favoriteCount', 'commentCount',
+               'publishedAt']]
 
+    msg_sumary_data = gs.generate_summary_dataframe(df_short)
+
+    st.write('Summary: ', msg_sumary_data)
     # visualization
     df['publishedAt'] = pd.to_datetime(df['publishedAt'])
     df['year'] = df['publishedAt'].dt.year
