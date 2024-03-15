@@ -1,0 +1,8 @@
+google_api_python_client==2.45.0
+numerize==0.12
+pandas==1.3.5
+plotly==5.7.0
+streamlit
+streamlit_lottie
+requests==2.27.1
+protobuf
