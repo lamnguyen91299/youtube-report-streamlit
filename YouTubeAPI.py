@@ -2,10 +2,9 @@ from googleapiclient.discovery import build
 import config
 import util
 import streamlit as st
-
+import encrypt as e
 # youtube = build('youtube', 'v3', developerKey=os.environ['API_KEY'])
-youtube = build('youtube', 'v3', developerKey='')
-
+youtube = build('youtube', 'v3', developerKey=e.decrypt('FNefXdF1I8IQZblmf9e2EpOdVTRXvK27yMH7WKp',5))
 
 def get_channel_videos(channel_id):
     """Fetch the list of videos present under the channel id.
