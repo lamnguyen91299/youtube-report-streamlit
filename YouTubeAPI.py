@@ -4,6 +4,8 @@ import config
 import util
 import streamlit as st
 import encrypt as e
+import os
+
 # Check if the app is running in Streamlit Cloud
 if "openai_api_key" in st.secrets and "youtube_api_key" in st.secrets:
     # Use Streamlit Secrets if running in Streamlit Cloud

@@ -2,7 +2,7 @@ from openai import OpenAI
 import streamlit as st
 import encrypt
 import pandas as pd
-
+import os
 
 if "openai_api_key" in st.secrets and "youtube_api_key" in st.secrets:
     # Use Streamlit Secrets if running in Streamlit Cloud
