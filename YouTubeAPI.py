@@ -1,4 +1,5 @@
 from googleapiclient.discovery import build
+import googleapiclient.discovery
 import config
 import util
 import streamlit as st
@@ -108,7 +109,21 @@ def stat_table(video_stats):
         else:
             config.commentCount.append(0)
 
+def get_channel_avatar(channel_id):
+    youtube = googleapiclient.discovery.build(
+        'youtube', 'v3', developerKey=e.decrypt('FNefXdF1I8IQZblmf9e2EpOdVTRXvK27yMH7WKp',5))
 
+    request = youtube.channels().list(
+        part='snippet',
+        id=channel_id
+    )
+    response = request.execute()
+
+    try:
+        thumbnail_url = response['items'][0]['snippet']['thumbnails']['high']['url']
+        return thumbnail_url
+    except (KeyError, IndexError):
+        return None
 @st.cache_data
 def convert_df(df):
     return df.to_csv(index=False).encode('utf-8')
