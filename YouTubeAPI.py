@@ -4,8 +4,23 @@ import config
 import util
 import streamlit as st
 import encrypt as e
+# Check if the app is running in Streamlit Cloud
+if "openai_api_key" in st.secrets and "youtube_api_key" in st.secrets:
+    # Use Streamlit Secrets if running in Streamlit Cloud
+    openai_api_key = st.secrets["openai_api_key"]
+    youtube_api_key = st.secrets["youtube_api_key"]
+else:
+    # Load environment variables if running locally
+    from dotenv import load_dotenv
+    import os
+    load_dotenv()
+    openai_api_key = os.getenv("openai_api_key")
+    youtube_api_key = os.getenv("youtube_api_key")
+
+
+
 # youtube = build('youtube', 'v3', developerKey=os.environ['API_KEY'])
-youtube = build('youtube', 'v3', developerKey=e.decrypt('FNefXdF1I8IQZblmf9e2EpOdVTRXvK27yMH7WKp',5))
+youtube = build('youtube', 'v3', developerKey=youtube_api_key)
 
 def get_channel_videos(channel_id):
     """Fetch the list of videos present under the channel id.

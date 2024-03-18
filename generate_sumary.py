@@ -1,6 +1,20 @@
 from openai import OpenAI
+import streamlit as st
 import encrypt
 import pandas as pd
+
+
+if "openai_api_key" in st.secrets and "youtube_api_key" in st.secrets:
+    # Use Streamlit Secrets if running in Streamlit Cloud
+    openai_api_key = st.secrets["openai_api_key"]
+    youtube_api_key = st.secrets["youtube_api_key"]
+else:
+    # Load environment variables if running locally
+    from dotenv import load_dotenv
+    import os
+    load_dotenv()
+    openai_api_key = os.getenv("openai_api_key")
+    youtube_api_key = os.getenv("youtube_api_key")
 
 def generate_summary_dataframe(dataframe):
     # Tạo prompt từ dữ liệu DataFrame
@@ -15,7 +29,6 @@ def generate_summary_dataframe(dataframe):
     prompt += "Please summarize the information above."
 
     # Cấu hình API Key của bạn
-    openai_api_key = encrypt.decrypt('xp-jXagRaRDIPvg4Z41dkbEY3GqgpKOrg3R4x8YCer8kQ0wQJvs',5)
     client = OpenAI(api_key=openai_api_key)
 
     # Gửi prompt đến API sử dụng model GPT-3.5 Turbo và nhận câu trả lời

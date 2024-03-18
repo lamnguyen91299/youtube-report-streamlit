@@ -6,6 +6,8 @@ import plotly.express as px
 import generate_sumary as gs
 from numerize import numerize
 
+
+
 # set the layout of the app
 st.set_page_config(layout='wide')
 
