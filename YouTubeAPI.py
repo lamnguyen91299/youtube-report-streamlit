@@ -3,7 +3,6 @@ import googleapiclient.discovery
 import config
 import util
 import streamlit as st
-import encrypt as e
 import os
 
 # Check if the app is running in Streamlit Cloud
@@ -89,7 +88,7 @@ def video_table(list_of_videos):
         config.video_id.append(video['snippet']['resourceId']['videoId'])
         config.video_type.append(video['snippet']['resourceId']['kind'])
         config.video_title.append(video['snippet']['title'])
-        config.video_description.append(video['snippet']['description'])
+        # config.video_description.append(video['snippet']['description'])
         config.publishedAt.append(video['snippet']['publishedAt'])
 
 
@@ -127,8 +126,6 @@ def stat_table(video_stats):
             config.commentCount.append(0)
 
 def get_channel_avatar(channel_id):
-    youtube = googleapiclient.discovery.build(
-        'youtube', 'v3', developerKey=e.decrypt('FNefXdF1I8IQZblmf9e2EpOdVTRXvK27yMH7WKp',5))
 
     request = youtube.channels().list(
         part='snippet',
