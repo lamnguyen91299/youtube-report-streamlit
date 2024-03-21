@@ -57,7 +57,7 @@ else:
 
 
     # show channel name
-    channel_name = "Channel Name: " + str(config.channel_name[0])
+    channel_name = str(config.channel_name[0])
     st.markdown(f"## {channel_name}")
     # image_url convert to data
     image_url = youTube.get_channel_avatar(youTubeChannelID)
