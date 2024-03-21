@@ -5,6 +5,7 @@ import config
 import plotly.express as px
 import generate_sumary as gs
 from numerize import numerize
+import util
 import os
 
 
@@ -34,14 +35,14 @@ st.markdown(""" <style>
 
 
 with st.form('youTube_channel_id'):
-        youTubeChannelID = st.text_input(label='YouTube Channel ID', placeholder='Paste the youtube channel id here...for '
-                                                                             'eg. UC6bXz3g1C9H6bdFa-wcZ72Q',
-                                     help="To test the app you can use channel id UC6bXz3g1C9H6bdFa-wcZ72Q")
+        youtube_url = st.text_input(label='YouTube Channel Url', placeholder='Paste the youtube channel url here',
+                                     help="To test the app you can use url https://www.youtube.com/@hoanglongmck ")
+        youTubeChannelID = youTube.get_channel_from_url(youtube_url)
         st.form_submit_button(label='Get Channel Stats')
-        st.write('Use this Channel Id : UC6bXz3g1C9H6bdFa-wcZ72Q')
+        st.write('Use this channel url : https://www.youtube.com/@hoanglongmck ')
         st.write('if you dont have any :)')
 
-if youTubeChannelID == '':
+if youtube_url == '':
     st.stop()
 else:
     list_of_videos = youTube.get_channel_videos(youTubeChannelID)
@@ -53,10 +54,34 @@ else:
                           config.dislike_count, config.favoriteCount, config.commentCount,
                           config.publishedAt), columns=config.video_table)
     df['publishedAt'] = pd.to_datetime(df['publishedAt'], utc=True)
-    st.markdown(""" ## YouTube Channel Details """)
-    st.write('Channel Name: ', config.channel_name[0])
-    # show thumbnail
-    st.image(youTube.get_channel_avatar(youTubeChannelID), width = 500)
+
+
+    # show channel name
+    channel_name = "Channel Name: " + str(config.channel_name[0])
+    st.markdown(f"## {channel_name}")
+    # image_url convert to data
+    image_url = youTube.get_channel_avatar(youTubeChannelID)
+    image_data = util.convert_image_url_to_data(image_url)
+    total_subcribes = youTube.get_subscriber_count(youTubeChannelID)
+    # description
+    description_channel = youTube.get_description(youTubeChannelID)
+    # Create columns for layout
+    col1, col2 = st.columns(2)
+    # Display thumbnail in left column
+    with col1:
+        st.image(image_data, width = 600)
+    # Display description in right column with proper formatting
+    with col2:
+        st.markdown(f"## Channel Description\n{description_channel}")
+        # Spacer for separation
+        st.write("")  # Adjust spacing as needed
+        st.markdown("---")
+        # Subscriber count (bottom right)
+        st.markdown(f"## {total_subcribes} Subscribers")
+    st.markdown("---")
+
+
+
 
     # metrics
     total_videos, total_views, total_likes, total_comments, last_published, first_published = st.columns(6)

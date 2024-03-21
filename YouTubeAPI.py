@@ -3,6 +3,7 @@ import googleapiclient.discovery
 import config
 import util
 import streamlit as st
+import requests
 import os
 
 # Check if the app is running in Streamlit Cloud
@@ -136,6 +137,59 @@ def get_channel_avatar(channel_id):
     try:
         thumbnail_url = response['items'][0]['snippet']['thumbnails']['high']['url']
         return thumbnail_url
+    except (KeyError, IndexError):
+        return None
+
+def get_description(channel_id):
+    request = youtube.channels().list(
+        part='snippet',
+        id=channel_id
+    )
+    try:
+        response = request.execute()
+        items = response.get('items', [])
+
+        # Check if there are any results
+        if items:
+          # Get the description from the first item (assuming it's the channel)
+          return items[0]['snippet']['description']
+        else:
+          return None
+    except Exception as e:
+        return None
+
+def get_channel_from_url(url):
+# Define the YouTube channel URL
+    try:
+      # Send a GET request to the URL using requests library
+      response = requests.get(url)
+
+      # Check for successful response (status code 200)
+      if response.status_code == 200:
+        # Extract the content as text
+        data = response.text
+
+        # Split the data based on the pattern "channel_id="
+        channel_id = data.split("channel_id=")[1][:24]
+
+        # Print the extracted channel ID
+        return channel_id
+      else:
+        return None
+
+    except requests.exceptions.RequestException as e:
+      # Handle network or other request errors
+      return None
+def get_subscriber_count(channel_id):
+    request = youtube.channels().list(
+        part='statistics',
+        id=channel_id
+    )
+    response = request.execute()
+    try:
+        # Extract subscriber count from the response
+        subscriber_count = response['items'][0]['statistics']['subscriberCount']
+        return str(subscriber_count)
     except (KeyError, IndexError):
         return None
 @st.cache_data
