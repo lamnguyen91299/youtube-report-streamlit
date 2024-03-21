@@ -58,6 +58,16 @@ else:
     # show thumbnail
     st.image(youTube.get_channel_avatar(youTubeChannelID), width = 500)
 
+    # metrics
+    total_videos, total_views, total_likes, total_comments, last_published, first_published = st.columns(6)
+
+    total_videos.metric("Total Videos", len(config.video_id))
+    total_views.metric("Total Views", numerize.numerize(float(df['view_count'].astype(int).sum()), 2))
+    total_likes.metric("Total Likes", numerize.numerize(float(df['like_count'].astype(int).sum()), 2))
+    total_comments.metric("Total Comments", numerize.numerize(float(df['commentCount'].astype(int).sum()), 4))
+    last_published.metric("Last Published", df['publishedAt'].max().strftime('%Y-%m-%d'))
+    first_published.metric("First Published", df['publishedAt'].min().strftime('%Y-%m-%d'))
+
     # visualization
     df['publishedAt'] = pd.to_datetime(df['publishedAt'])
     df['year'] = df['publishedAt'].dt.year
@@ -76,16 +86,6 @@ else:
         use_container_width=True
     )
     # st.plotly_chart(fig_videos_per_year)
-    # metrics
-    total_videos, total_views, total_likes, total_comments, last_published, first_published = st.columns(6)
-
-    total_videos.metric("Total Videos", len(config.video_id))
-    total_views.metric("Total Views", numerize.numerize(float(df['view_count'].astype(int).sum()), 2))
-    total_likes.metric("Total Likes", numerize.numerize(float(df['like_count'].astype(int).sum()), 2))
-    total_comments.metric("Total Comments", numerize.numerize(float(df['commentCount'].astype(int).sum()), 4))
-    last_published.metric("Last Published", df['publishedAt'].max().strftime('%Y-%m-%d'))
-    first_published.metric("First Published", df['publishedAt'].min().strftime('%Y-%m-%d'))
-
     # display dataframe
     st.dataframe(df.head(100))
     # Download data
