@@ -29,7 +29,7 @@ To run this project, you will need to add the following environment variables to
 Clone the project
 
 ```bash
-  git clonehttps://github.com/lamnguyen91299/youtube-report-streamlit.git
+  git clone https://github.com/lamnguyen91299/youtube-report-streamlit.git
 ```
 
 Go to the project directory
