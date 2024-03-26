@@ -1,5 +1,5 @@
 
-# Auto generated report Du-tube
+# Auto generated report Diutube
 
 A youtube tool for lazy people
 
